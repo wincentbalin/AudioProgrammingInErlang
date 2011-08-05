@@ -1,4 +1,4 @@
--module(music_theory).
+-module(note_interval).
 -author('Wincent Balin').
 -export([main/0]).
 
