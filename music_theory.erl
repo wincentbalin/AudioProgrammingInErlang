@@ -1,3 +1,5 @@
+%Boilerplate
+
 -module(music_theory).
 -author('Wincent Balin').
 -export([main/0]).
