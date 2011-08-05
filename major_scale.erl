@@ -16,6 +16,14 @@ note_name(9) -> "A";
 note_name(10) -> "Bb";
 note_name(11) -> "B".
 
+% Enforce pitch boundaires
+enforce_boundaries(Pitch) when Pitch > 11 ->
+	enforce_boundaries(Pitch - 12);
+enforce_boundaries(Pitch) when Pitch < 0 ->
+	enforce_boundaries(Pitch + 12);
+enforce_boundaries(Pitch) ->
+	Pitch.
+
 % Build scale
 build_scale(Key) ->
 	build_scale(Key, "", 0).
@@ -34,6 +42,8 @@ build_scale(_, Scale, _) ->
 
 main() ->
 	Note_input = io:get_line("Please enter the key (in pitch-class number, 0-11): "),
-	{Note, _} = string:to_integer(Note_input),
+	{Note_raw, _} = string:to_integer(Note_input),
+	% Make sure start note is within boundaries
+	Note = enforce_boundaries(Note_raw),
 	io:format("~s~n", [build_scale(Note)]).
 	

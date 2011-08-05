@@ -35,6 +35,14 @@ interval_description(9) -> "Major 6th up or minor 3rd down";
 interval_description(10) -> "Minor 7th up or major 2nd down";
 interval_description(11) -> "Major 7th up or minor 2nd down".
 
+% Ensure boundaries of the interval
+correct_interval(Interval) when Interval < 0 ->
+	correct_interval(Interval + 12);
+correct_interval(Interval) when Interval > 11 ->
+	correct_interval(Interval - 12);
+correct_interval(Interval) ->
+	Interval.
+
 main() ->
 	% Input notes
 	io:format("Please enter two natural notes:~n"),
@@ -46,7 +54,8 @@ main() ->
 	First_pitch = note_to_pitch(First_note),
 	Second_pitch = note_to_pitch(Second_note),
 	% Calculate interval
-	Interval = abs((First_pitch - Second_pitch) rem 12),
+	Simple_interval = Second_pitch - First_pitch,
+	Interval = correct_interval(Simple_interval),
 	% Print amount of semitones
 	Semitones_up = Interval,
 	Semitones_down =
@@ -56,5 +65,5 @@ main() ->
 		end,
 	io:format("~b semitones up or ~b semitones down~n", [Semitones_up, Semitones_down]),
 	% Print interval name
-	io:format("~p~n", [interval_description(Interval)]).
+	io:format("~s~n", [interval_description(Interval)]).
 	
